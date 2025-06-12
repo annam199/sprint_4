@@ -1,6 +1,8 @@
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -12,11 +14,45 @@ import pages.MainPage;
 import pages.OrderFirstPage;
 import pages.OrderSecondPage;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import static org.junit.Assert.assertTrue;
 
-public class Samokat {
+@RunWith(Parameterized.class)
+public class SamokatTest {
+    private final String name;
+    private final String lastName;
+    private final String address;
+    private final String phone;
+    private final String metro;
+    private final String data;
+    private final String term;
+    private final String color;
+    private final String comment;
+
     private WebDriver driver;
     private WebDriverWait wait;
+
+    @Parameterized.Parameters
+    public static Collection<Object[]> data() {
+        return Arrays.asList(new Object[][]{
+                {"Маша", "Ласточкина", "Ленина 4", "+79999999997", "fourth", "fourth", "second", "second", "21"},
+                {"Ваня", "Ленин", "Ленина 3", "+79999999998", "third", "third", "third", "second", "-"}
+        });
+    }
+
+    public SamokatTest(String name, String lastName, String address, String phone, String metro, String data, String term, String color, String comment) {
+        this.name = name;
+        this.lastName = lastName;
+        this.address = address;
+        this.phone = phone;
+        this.metro = metro;
+        this.data = data;
+        this.term = term;
+        this.color = color;
+        this.comment = comment;
+    }
 
     @Before
     public void startUp() {
@@ -24,7 +60,7 @@ public class Samokat {
         WebDriverManager.firefoxdriver().setup();
     }
 
-    private void Test(String name, String lastName, String address, String phone, String metro, String data, String term, String color, String comment) {
+    private void test(String name, String lastName, String address, String phone, String metro, String data, String term, String color, String comment) {
         wait = new WebDriverWait(driver, 3);
 
         driver.get("https://qa-scooter.praktikum-services.ru/");
@@ -51,35 +87,19 @@ public class Samokat {
     }
 
     @Test
-    public void FirstChromeTest() {
+    public void chromeTest() {
         driver = new ChromeDriver();
 
-        this.Test("Вася", "Васячкин", "Ленина 1", "+79999999999", "first", "first", "first", "first", "Домофон не работает");
+        this.test(this.name, this.lastName, this.address, this.phone, this.metro, this.data, this.term, this.color, this.comment);
     }
 
     @Test
-    public void SecondChromeTest() {
-        driver = new ChromeDriver();
-
-        this.Test("Толя", "Мамедов", "Ленина 2", "+79999999990", "second", "second", "second", "first", "Домофон работает");
-    }
-
-    @Test
-    public void FirstFirefoxTest() {
+    public void firefoxTest() {
         FirefoxOptions options = new FirefoxOptions();
         options.setBinary("/Applications/Firefox.app/Contents/MacOS/firefox");
         driver = new FirefoxDriver(options);
 
-        this.Test("Ваня", "Ленин", "Ленина 3", "+79999999998", "third", "third", "third", "second", "-");
-    }
-
-    @Test
-    public void SecondFirefoxTest() {
-        FirefoxOptions options = new FirefoxOptions();
-        options.setBinary("/Applications/Firefox.app/Contents/MacOS/firefox");
-        driver = new FirefoxDriver(options);
-
-        this.Test("Маша", "Ласточкина", "Ленина 4", "+79999999997", "fourth", "fourth", "second", "second", "21");
+        this.test(this.name, this.lastName, this.address, this.phone, this.metro, this.data, this.term, this.color, this.comment);
     }
 
     @After
