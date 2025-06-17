@@ -10,56 +10,56 @@ public class OrderFirstPage {
     private WebDriverWait wait;
 
     // локатор поля «Имя»
-    private By name = By.xpath("//*[@id=\"root\"]/div/div[2]/div[2]/div[1]/input");
+    private By nameInput = By.xpath(".//input[contains(@placeholder, '* Имя')]");
     // локатор поля «Фамилия»
-    private By lastname = By.xpath("//*[@id=\"root\"]/div/div[2]/div[2]/div[2]/input");
+    private By lastNameInput = By.xpath(".//input[contains(@placeholder, '* Фамилия')]");
     // локатор поля «Адрес: куда привести самокат»
-    private By address = By.xpath("//*[@id=\"root\"]/div/div[2]/div[2]/div[3]/input");
+    private By addressInput = By.xpath(".//input[contains(@placeholder, '* Адрес: куда привезти заказ')]");
     // локатор поля «Станция метро»
-    private By metro = By.xpath("//*[@id=\"root\"]/div/div[2]/div[2]/div[4]/div/div[1]/input");
-    // локатор поля «Для первой станции метро из списка»
-    private By firstStation = By.xpath("//*[@id=\"root\"]/div/div[2]/div[2]/div[4]/div/div[2]/ul/li[1]");
+    private By metroInput = By.xpath(".//input[contains(@placeholder, '* Станция метро')]");
+    // локатор поля «Для первой станции станции метро из списка»
+    private By firstStationInList = By.xpath(".//li[@data-value='1']");
     // локатор поля «Для второй станции метро из списка»
-    private By secondStation = By.xpath("//*[@id=\"root\"]/div/div[2]/div[2]/div[4]/div/div[2]/ul/li[2]");
+    private By secondStationInList = By.xpath(".//li[@data-value='2']");
     // локатор поля «Телефон: на него позвонит курьер»
-    private By phone = By.xpath("//*[@id=\"root\"]/div/div[2]/div[2]/div[5]/input");
+    private By phoneInput = By.xpath(".//input[contains(@placeholder, '* Телефон: на него позвонит курьер')]");
     // локатор кнопки «Далее»
-    private By next = By.xpath("//*[@id=\"root\"]/div/div[2]/div[3]/button");
+    private By nextButton = By.xpath("//*[@id=\"root\"]/div/div[2]/div[3]/button");
 
     public OrderFirstPage(WebDriver driver, WebDriverWait wait) {
         this.driver = driver;
         this.wait = wait;
     }
     public void fillName(String text) {
-        driver.findElement(this.name).sendKeys(text);
+        driver.findElement(this.nameInput).sendKeys(text);
     }
 
     public void fillLastName(String text) {
-        driver.findElement(this.lastname).sendKeys(text);
+        driver.findElement(this.lastNameInput).sendKeys(text);
     }
 
     public void fillAddress(String text) {
-        driver.findElement(this.address).sendKeys(text);
+        driver.findElement(this.addressInput).sendKeys(text);
     }
 
     public void fillMetro(String station) {
-        driver.findElement(this.metro).click();
+        driver.findElement(this.metroInput).click();
         switch (station) {
             case "first":
-                wait.until(ExpectedConditions.elementToBeClickable(firstStation));
+                wait.until(ExpectedConditions.elementToBeClickable(firstStationInList));
                 break;
             case "second":
-                wait.until(ExpectedConditions.elementToBeClickable(secondStation));
+                wait.until(ExpectedConditions.elementToBeClickable(secondStationInList));
                 break;
         }
-        driver.findElement(firstStation).click();
+        driver.findElement(firstStationInList).click();
     }
 
     public void fillPhone(String text) {
-        driver.findElement(this.phone).sendKeys(text);
+        driver.findElement(this.phoneInput).sendKeys(text);
     }
 
     public void clickNext() {
-        driver.findElement(this.next).click();
+        driver.findElement(this.nextButton).click();
     }
 }

@@ -2,6 +2,7 @@ package pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -10,58 +11,54 @@ public class OrderSecondPage {
     private WebDriverWait wait;
 
     // локатор поля «Когда привезти самокат»
-    private By data = By.xpath("//*[@id=\"root\"]/div/div[2]/div[2]/div[1]/div[1]/div/input");
+    private By dataInput = By.xpath(".//input[contains(@placeholder, '* Когда привезти самокат')]");
     // локатор поля «Для первой даты из списка»
-    private By firstData = By.xpath("//*[@id=\"root\"]/div/div[2]/div[2]/div[1]/div[2]/div[2]/div/div/div[2]/div[2]/div[3]/div[2]");
+    private By monday = By.xpath("//div[contains(@class, 'react-datepicker__week')]/div[contains(@class,'react-datepicker__day')][1]");
     // локатор поля «Для второй даты из списка»
-    private By secondData = By.xpath("//*[@id=\"root\"]/div/div[2]/div[2]/div[1]/div[2]/div[2]/div/div/div[2]/div[2]/div[3]/div[4]");
-    // локатор поля «Для третьей даты из списка»
-    private By thirdData = By.xpath("//*[@id=\"root\"]/div/div[2]/div[2]/div[1]/div[2]/div[2]/div/div/div[2]/div[2]/div[3]/div[6]");
-    // локатор поля «Для четвертой даты из списка»
-    private By fourthData = By.xpath("//*[@id=\"root\"]/div/div[2]/div[2]/div[1]/div[2]/div[2]/div/div/div[2]/div[2]/div[3]/div[7]");
+    private By tuesday = By.xpath("//div[contains(@class, 'react-datepicker__week')]/div[contains(@class,'react-datepicker__day')][2]");
     // локатор поля «Срок аренды»
-    private By term = By.xpath("//*[@id=\"root\"]/div/div[2]/div[2]/div[2]/div[1]");
+    private By term = By.xpath(".//div[text()='* Срок аренды']");
     // локатор поля «Для первого варианта срока аренды из списка»
-    private By firstTerm = By.xpath("//*[@id=\"root\"]/div/div[2]/div[2]/div[2]/div[2]/div[1]");
+    private By dayTerm = By.xpath("//div[text()='сутки']");
     // локатор поля «Для второго варианта срока аренды из списка»
-    private By secondTerm = By.xpath("//*[@id=\"root\"]/div/div[2]/div[2]/div[2]/div[2]/div[2]");
-    // локатор поля «Для третьего варианта срока аренды из списка»
-    private By thirdTerm = By.xpath("//*[@id=\"root\"]/div/div[2]/div[2]/div[2]/div[2]/div[4]");
-    // локатор поля «Для четвертого варианта срока аренды из списка»
-    private By fourthTerm = By.xpath("//*[@id=\"root\"]/div/div[2]/div[2]/div[2]/div[2]/div[5]");
-    // локатор поля «Цвет самоката»
-    private By color = By.xpath("//*[@id=\"root\"]/div/div[2]/div[2]/div[3]/div");
+    private By twoDaysTerm = By.xpath("//div[text()='двое суток']");
     // локатор поля «Для первого цвета из списка»
-    private By firstColor = By.xpath("//*[@id=\"root\"]/div/div[2]/div[2]/div[3]/div");
+    private By blackColorLabel = By.xpath("//label[text()='чёрный жемчуг']");
     // локатор поля «Для второго цвета из списка»
-    private By secondColor = By.xpath("//*[@id=\"root\"]/div/div[2]/div[2]/div[3]/div");
+    private By greyColorLabel = By.xpath("//label[text()='серая безысходность']");
     // локатор поля «Комментарий для курьера»
-    private By comment = By.xpath("//*[@id=\"root\"]/div/div[2]/div[2]/div[4]/input");
+    private By commentInput = By.xpath(".//input[contains(@placeholder, 'Комментарий для курьера')]");
     // локатор кнопки «Заказать»
-    private By orderButton = By.xpath("//*[@id=\"root\"]/div/div[2]/div[3]/button[2]");
+    private By orderButton = By.xpath("//div[contains(@class, 'Order_Buttons')]/button[text()='Заказать']");
+    // кнопка подтверждения заказа
+    private By finishOrderButton = By.xpath("//button[text()='Да']");
+    // текст в модальном окне при успешном подтверждении заказа
+    private By orderComplete = By.xpath("//div[text()='Заказ оформлен']");
+
     public OrderSecondPage(WebDriver driver, WebDriverWait wait) {
         this.driver = driver;
         this.wait = wait;
     }
 
+    public WebElement getOrderComplete() {
+        return driver.findElement(orderComplete);
+    }
+
+    public void finishOrder() {
+        wait.until(ExpectedConditions.elementToBeClickable(finishOrderButton));
+        driver.findElement(finishOrderButton).click();
+    }
+
     public void data(String data) {
-        driver.findElement(this.data).click();
+        driver.findElement(this.dataInput).click();
         switch (data) {
             case "first":
-                wait.until(ExpectedConditions.elementToBeClickable(firstData));
-                driver.findElement(firstData).click();
+                wait.until(ExpectedConditions.elementToBeClickable(monday));
+                driver.findElement(monday).click();
                 break;
             case "second":
-                wait.until(ExpectedConditions.elementToBeClickable(secondData));
-                driver.findElement(secondData).click();
-                break;
-            case "third":
-                wait.until(ExpectedConditions.elementToBeClickable(thirdData));
-                driver.findElement(thirdData).click();
-                break;
-            case "fourth":
-                wait.until(ExpectedConditions.elementToBeClickable(fourthData));
-                driver.findElement(fourthData).click();
+                wait.until(ExpectedConditions.elementToBeClickable(tuesday));
+                driver.findElement(tuesday).click();
                 break;
         }
     }
@@ -70,40 +67,31 @@ public class OrderSecondPage {
         driver.findElement(this.term).click();
         switch (term) {
             case "first":
-                wait.until(ExpectedConditions.elementToBeClickable(firstTerm));
-                driver.findElement(firstTerm).click();
+                wait.until(ExpectedConditions.elementToBeClickable(dayTerm));
+                driver.findElement(dayTerm).click();
                 break;
             case "second":
-                wait.until(ExpectedConditions.elementToBeClickable(secondTerm));
-                driver.findElement(secondTerm).click();
-                break;
-            case "third":
-                wait.until(ExpectedConditions.elementToBeClickable(thirdTerm));
-                driver.findElement(thirdTerm).click();
-                break;
-            case "fourth":
-                wait.until(ExpectedConditions.elementToBeClickable(fourthTerm));
-                driver.findElement(fourthTerm).click();
+                wait.until(ExpectedConditions.elementToBeClickable(twoDaysTerm));
+                driver.findElement(twoDaysTerm).click();
                 break;
         }
     }
 
     public void color(String color) {
-        driver.findElement(this.color).click();
         switch (color) {
             case "first":
-                wait.until(ExpectedConditions.elementToBeClickable(firstColor));
-                driver.findElement(firstColor).click();
+                wait.until(ExpectedConditions.elementToBeClickable(blackColorLabel));
+                driver.findElement(blackColorLabel).click();
                 break;
             case "second":
-                wait.until(ExpectedConditions.elementToBeClickable(secondColor));
-                driver.findElement(secondColor).click();
+                wait.until(ExpectedConditions.elementToBeClickable(greyColorLabel));
+                driver.findElement(greyColorLabel).click();
                 break;
         }
     }
 
     public void comment(String text) {
-        driver.findElement(this.comment).sendKeys(text);
+        driver.findElement(this.commentInput).sendKeys(text);
     }
 
     public void clickOrder() {
